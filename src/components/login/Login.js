@@ -1,14 +1,18 @@
+// pages/login/Login.js
+
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import './Login.css';
-import { UserContext } from '../../context/UserContext'; // Importujemy kontekst użytkownika
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const { setUserId, setToken } = useContext(UserContext); // Pobieramy funkcje do ustawiania userId i tokena z kontekstu użytkownika
+  const { setUserId, setToken, setIsLoggedIn } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,8 +31,12 @@ const Login = () => {
       // Zapisujemy userId i token do kontekstu użytkownika
       setUserId(response.data.userId);
       setToken(response.data.token);
+      setIsLoggedIn(true);
 
-      // Tutaj możesz przekierować użytkownika na inną stronę lub wyświetlić komunikat o sukcesie
+      // Wyświetlamy komunikat przez 2 sekundy, a potem przekierowujemy na stronę główną
+      setTimeout(() => {
+        navigate('/home');
+      }, 1000);
 
     } catch (error) {
       console.error('Login error:', error);

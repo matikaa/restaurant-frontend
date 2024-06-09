@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Register.css'; // Importujemy plik CSS ze stylami
+import { useNavigate } from 'react-router-dom'; // Importujemy hook useNavigate
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -10,6 +11,7 @@ const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate(); // Inicjalizujemy hook useNavigate
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -17,17 +19,21 @@ const Register = () => {
     setSuccess('');
 
     try {
-      const response = await axios.post('http://localhost:8080/users/register', { // Zmieniamy adres na endpoint lokalny
+      const response = await axios.post('http://localhost:8080/users/register', {
         email,
         name,
         password,
         address,
         phoneNumber
       });
-      
+
       console.log('Registration successful:', response.data);
       setSuccess('Registration successful!');
-      // Tutaj możesz przekierować użytkownika na inną stronę lub wyświetlić komunikat o sukcesie
+      
+      // Przekierowanie użytkownika na stronę /login po upływie jednej sekundy
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
 
     } catch (error) {
       console.error('Registration error:', error);
