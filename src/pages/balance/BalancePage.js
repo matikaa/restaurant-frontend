@@ -1,14 +1,14 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import './BalancePage.css';
-import { UserContext } from '../../context/UserContext'; // Importujemy kontekst użytkownika
+import { UserContext } from '../../context/UserContext';
 import { BalanceContext } from '../../context/BalanceContext';
 
 const BalancePage = () => {
   const [money, setMoney] = useState('');
   const [message, setMessage] = useState('');
-  const { userId, token } = useContext(UserContext); // Pobieramy userId, token i funkcję fetchBalances z kontekstu użytkownika
-  const { setBalance } = useContext(BalanceContext)
+  const { userId, token } = useContext(UserContext);
+  const { setBalance } = useContext(BalanceContext);
 
   const handleMoneyChange = (e) => {
     setMoney(e.target.value);
@@ -19,7 +19,7 @@ const BalancePage = () => {
       const response = await axios.put(
         `http://localhost:8080/users/${userId}/balance`,
         { money },
-        { headers: { Authorization: `Bearer ${token}` } } // Przekazujemy token jako nagłówek HTTP
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (!response || !response.status) {
@@ -39,7 +39,7 @@ const BalancePage = () => {
       setMessage('Deposit successful!');
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
-      console.error('Error response:', error.response); // Dodajemy logowanie błędu
+      console.error('Error response:', error.response);
 
       if (error.response && error.response.status === 400) {
         setMessage('Wrong amount.');

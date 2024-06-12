@@ -3,13 +3,15 @@ import axios from 'axios';
 import './CartPage.css';
 import { UserContext } from '../../context/UserContext';
 import { CartContext } from '../../context/CartContext';
+import { BalanceContext } from '../../context/BalanceContext';
 
 const CartPage = () => {
   const [cartData, setCartData] = useState(null);
   const [error, setError] = useState('');
-  const [message, setMessage] = useState(null); // Komunikat ogólny
+  const [message, setMessage] = useState(null);
   const { userId, token } = useContext(UserContext);
   const { setCartBalance } = useContext(CartContext);
+  const { setBalance } = useContext(BalanceContext);
 
   const fetchCartData = async () => {
     try {
@@ -62,8 +64,8 @@ const CartPage = () => {
       );
 
       fetchCartData();
-      setMessage('Food deleted successfully!'); // Ustawienie komunikatu o usunięciu dania
-      setTimeout(() => setMessage(null), 3000); // Usunięcie komunikatu po 3 sekundach
+      setMessage('Food deleted successfully!');
+      setTimeout(() => setMessage(null), 3000);
     } catch (error) {
       setError('Failed to delete food from cart. Please try again.');
     }
@@ -74,11 +76,29 @@ const CartPage = () => {
       await axios.put(`http://localhost:8080/users/${userId}/cart/order`, null, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      
       setMessage('Order completed successfully!');
-      fetchCartData(); // Odświeżanie koszyka po złożeniu zamówienia
+      fetchCartData();
+      fetchUserBalance();
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
       setError('Failed to complete order. Please try again.');
+    }
+  };
+
+  const fetchUserBalance = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/users/${userId}/balance`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response || !response.data) {
+        throw new Error('Invalid response from server');
+      }
+
+      setBalance(response.data.money);
+    } catch (error) {
+      setError('Failed to fetch user balance. Please try again.');
     }
   };
 

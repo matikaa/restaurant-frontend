@@ -11,7 +11,7 @@ const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const navigate = useNavigate(); // Inicjalizujemy hook useNavigate
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -30,7 +30,6 @@ const Register = () => {
       console.log('Registration successful:', response.data);
       setSuccess('Registration successful!');
       
-      // Przekierowanie użytkownika na stronę /login po upływie jednej sekundy
       setTimeout(() => {
         navigate('/login');
       }, 1000);

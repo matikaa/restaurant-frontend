@@ -1,5 +1,3 @@
-// pages/login/Login.js
-
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import './Login.css';
@@ -10,14 +8,12 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const { setUserId, setToken, setIsLoggedIn } = useContext(UserContext);
+  const { handleLogin } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setSuccess('');
 
     try {
       const response = await axios.post('http://localhost:8080/users/login', {
@@ -26,17 +22,8 @@ const Login = () => {
       });
 
       console.log('Login successful:', response.data);
-      setSuccess('You are logged in!');
-      
-      // Zapisujemy userId i token do kontekstu użytkownika
-      setUserId(response.data.userId);
-      setToken(response.data.token);
-      setIsLoggedIn(true);
-
-      // Wyświetlamy komunikat przez 2 sekundy, a potem przekierowujemy na stronę główną
-      setTimeout(() => {
-        navigate('/home');
-      }, 1000);
+      handleLogin(response.data.userId, response.data.token);
+      navigate('/home');
 
     } catch (error) {
       console.error('Login error:', error);
@@ -61,7 +48,7 @@ const Login = () => {
         <h1>Login</h1>
       </div>
       <div className="login-form">
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email:</label>
             <input
@@ -86,7 +73,6 @@ const Login = () => {
           </div>
           <button type="submit" className="btn btn-primary">Login</button>
           {error && <p className="error">{error}</p>}
-          {success && <p className="success">{success}</p>}
         </form>
       </div>
     </div>

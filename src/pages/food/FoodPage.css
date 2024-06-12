@@ -51,10 +51,10 @@
   width: 70%;
 }
 
-.add-button {
+.add-button, .edit-button {
   width: 30%;
-  background-color: #007bff; /* Kolor przycisku */
-  color: #fff; /* Kolor tekstu */
+  background-color: #007bff;
+  color: #fff;
   border: none;
   border-radius: 5px;
   padding: 0.5rem;
@@ -63,11 +63,23 @@
   transition: background-color 0.3s ease;
 }
 
-.add-button:hover {
-  background-color: #0056b3; /* Kolor przycisku po najechaniu myszką */
+.add-button:hover, .edit-button:hover {
+  background-color: #0056b3;
 }
 
 .error {
   color: red;
   margin-top: 1rem;
+}
+
+input[type="text"], input[type="number"] {
+  width: calc(100% - 1rem);
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+input[type="number"] {
+  margin-right: 0;
 }
