@@ -27,7 +27,6 @@ const Register = () => {
         phoneNumber
       });
 
-      console.log('Registration successful:', response.data);
       setSuccess('Registration successful!');
       
       setTimeout(() => {

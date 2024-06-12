@@ -8,12 +8,14 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const { handleLogin } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     try {
       const response = await axios.post('http://localhost:8080/users/login', {
@@ -21,9 +23,12 @@ const Login = () => {
         password
       });
 
-      console.log('Login successful:', response.data);
       handleLogin(response.data.userId, response.data.token);
-      navigate('/home');
+      setSuccess('You are logged in!');
+
+      setTimeout(() => {
+        navigate('/home');
+      }, 1000);
 
     } catch (error) {
       console.error('Login error:', error);
@@ -73,6 +78,7 @@ const Login = () => {
           </div>
           <button type="submit" className="btn btn-primary">Login</button>
           {error && <p className="error">{error}</p>}
+          {success && <p className="success">{success}</p>}
         </form>
       </div>
     </div>
