@@ -1,5 +1,3 @@
-// App.js
-
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
@@ -11,7 +9,7 @@ import LogoutPage from './pages/logout/LogoutPage';
 import CartPage from './pages/cart/CartPage';
 import OrderPage from './pages/order/OrderPage';
 import ContactPage from './pages/contact/ContactPage';
-import StatisticPage from './pages/statistic/StatisticPage';  // Import StatisticPage
+import StatisticPage from './pages/statistic/StatisticPage';
 import './App.css';
 import { UserProvider, UserContext } from './context/UserContext';
 import { CartProvider } from './context/CartContext';
@@ -19,7 +17,7 @@ import UserBalances from './components/UserBalances';
 import { BalanceProvider } from './context/BalanceContext';
 
 const Navigation = () => {
-  const { isLoggedIn, role } = useContext(UserContext);  // Pobierz rolę użytkownika
+  const { isLoggedIn, role } = useContext(UserContext);
 
   return (
     <nav className="nav">
@@ -31,7 +29,7 @@ const Navigation = () => {
           <Link to="/cart" className="nav-link">Cart</Link>
           <Link to="/orders" className="nav-link">Orders</Link>
           <Link to="/balance" className="nav-link">Balance</Link>
-          {role === 'ADMIN' && <Link to="/statistics" className="nav-link">Statistics</Link>} {/* Link do Statistics dla admina */}
+          {role === 'ADMIN' && <Link to="/statistics" className="nav-link">Statistics</Link>}
           <Link to="/logout" className="nav-link">Logout</Link>
         </>
       ) : (
@@ -68,7 +66,7 @@ const App = () => {
                   <Route path="/balance" element={<BalancePage />} />
                   <Route path="/logout" element={<LogoutPage />} />
                   <Route path="/contact" element={<ContactPage />} />
-                  <Route path="/statistics" element={<StatisticPage />} /> {/* Trasa do Statistics */}
+                  <Route path="/statistics" element={<StatisticPage />} />
                   <Route path="/" element={<HomePage />} />
                 </Routes>
               </main>

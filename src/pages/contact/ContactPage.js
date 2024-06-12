@@ -1,5 +1,3 @@
-// ContactPage.js
-
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './ContactPage.css';
@@ -10,7 +8,7 @@ const ContactPage = () => {
   const [editData, setEditData] = useState(null); 
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const { isLoggedIn, role, token } = useContext(UserContext); // Dodano token
+  const { isLoggedIn, role, token } = useContext(UserContext);
 
   const fetchContactData = async () => {
     try {
@@ -37,7 +35,7 @@ const ContactPage = () => {
           editData,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Przekazano token
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -75,7 +73,7 @@ const ContactPage = () => {
       ) : (
         <p>Loading contact data...</p>
       )}
-      {isEditing && editData && ( // Dodano sprawdzenie editData
+      {isEditing && editData && (
         <div className="edit-form">
           <h2>Edit Contact</h2>
           <form onSubmit={(e) => { e.preventDefault(); handleEditContact(); }}>

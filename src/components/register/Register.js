@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Register.css'; // Importujemy plik CSS ze stylami
-import { useNavigate } from 'react-router-dom'; // Importujemy hook useNavigate
+import './Register.css';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [name, setName] = useState('');

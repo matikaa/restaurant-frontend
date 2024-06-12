@@ -1,7 +1,6 @@
-// Food.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Food.css'; // Importujemy plik CSS ze stylami
+import './Food.css';
 
 const Food = () => {
   const [categories, setCategories] = useState([]);
@@ -10,7 +9,7 @@ const Food = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/categories'); // Zakładając, że serwer działa lokalnie
+        const response = await axios.get('http://localhost:8080/categories');
         if (Array.isArray(response.data)) {
           setCategories(response.data);
         } else {

@@ -34,7 +34,7 @@
 }
 
 .edit-form button {
-  width: 45%; /* Zmniejszyłem szerokość przycisków */
+  width: 45%;
   background-color: #007bff;
   color: #fff;
   border: none;

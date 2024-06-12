@@ -123,7 +123,7 @@ const CategoryCard = ({ category, handleAddToOrder, role, isLoggedIn, setMessage
             role={role} 
             isLoggedIn={isLoggedIn} 
             setMessage={setMessage}
-            fetchFoods={fetchFoods} // Przekazanie funkcji fetchFoods do FoodItem
+            fetchFoods={fetchFoods}
           />
         ))}
       </div>
@@ -160,7 +160,6 @@ const FoodItem = ({ category, food, handleAddToOrder, role, isLoggedIn, setMessa
       setMessage({ text: 'Food updated successfully!', type: 'success' });
       setTimeout(() => setMessage(null), 3000);
 
-      // Odświeżenie listy jedzenia po zapisaniu zmian
       fetchFoods();
     } catch (error) {
       console.error('Edit food error:', error);
