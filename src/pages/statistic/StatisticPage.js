@@ -3,7 +3,7 @@ import Statistic from '../../components/statistic/Statistic';
 
 const StatisticPage = () => {
   return (
-    <div className="statistic- page">
+    <div className="statistic-page">
       <Statistic />
     </div>
   );

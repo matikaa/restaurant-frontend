@@ -73,13 +73,14 @@ const Food = () => {
       {message && <MessageBar message={message} />}
       <div className="categories-list">
         {categories.map((category) => (
-          <CategoryCard 
-            key={category.categoryId} 
-            category={category} 
-            handleAddToOrder={handleAddToOrder} 
-            role={role} 
+          <CategoryCard
+            key={category.categoryId}
+            category={category}
+            handleAddToOrder={handleAddToOrder}
+            role={role}
             isLoggedIn={isLoggedIn}
-            setMessage={setMessage} 
+            setMessage={setMessage}
+            token={token} // Przekazanie token jako props do CategoryCard
           />
         ))}
       </div>
@@ -87,7 +88,7 @@ const Food = () => {
   );
 };
 
-const CategoryCard = ({ category, handleAddToOrder, role, isLoggedIn, setMessage }) => {
+const CategoryCard = ({ category, handleAddToOrder, role, isLoggedIn, setMessage, token }) => {
   const [foods, setFoods] = useState([]);
   const [error, setError] = useState('');
 
@@ -109,21 +110,46 @@ const CategoryCard = ({ category, handleAddToOrder, role, isLoggedIn, setMessage
     fetchFoods();
   }, [category.categoryId, category.categoryName]);
 
+  const handleDeleteFood = async (foodId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/categories/${category.categoryId}/food/${foodId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (!response || !response.status) {
+        throw new Error('Invalid response from server');
+      }
+
+      setMessage({ text: 'Food deleted successfully!', type: 'success' });
+      setTimeout(() => setMessage(null), 3000);
+
+      // Refresh foods after deletion
+      fetchFoods();
+    } catch (error) {
+      console.error('Delete food error:', error);
+      setMessage({ text: 'Failed to delete food. Please try again.', type: 'error' });
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
   return (
     <div className="category-card">
       <h2>{category.categoryName}</h2>
       {error && <p className="error">{error}</p>}
       <div className="foods-list">
         {foods.map((food) => (
-          <FoodItem 
-            key={food.foodId} 
-            category={category} 
-            food={food} 
-            handleAddToOrder={handleAddToOrder} 
-            role={role} 
-            isLoggedIn={isLoggedIn} 
+          <FoodItem
+            key={food.foodId}
+            category={category}
+            food={food}
+            handleAddToOrder={handleAddToOrder}
+            handleDeleteFood={handleDeleteFood} // Pass delete handler to FoodItem
+            role={role}
+            isLoggedIn={isLoggedIn}
             setMessage={setMessage}
             fetchFoods={fetchFoods}
+            token={token} // Przekazanie token jako props do FoodItem
           />
         ))}
       </div>
@@ -131,11 +157,10 @@ const CategoryCard = ({ category, handleAddToOrder, role, isLoggedIn, setMessage
   );
 };
 
-const FoodItem = ({ category, food, handleAddToOrder, role, isLoggedIn, setMessage, fetchFoods }) => {
+const FoodItem = ({ category, food, handleAddToOrder, handleDeleteFood, role, isLoggedIn, setMessage, fetchFoods, token }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [foodName, setFoodName] = useState(food.foodName);
   const [foodPrice, setFoodPrice] = useState(food.foodPrice);
-  const { token } = useContext(UserContext);
 
   const handleEditFood = async () => {
     try {
@@ -168,19 +193,42 @@ const FoodItem = ({ category, food, handleAddToOrder, role, isLoggedIn, setMessa
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/categories/${category.categoryId}/food/${food.foodId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (!response || !response.status) {
+        throw new Error('Invalid response from server');
+      }
+
+      setMessage({ text: 'Food deleted successfully!', type: 'success' });
+      setTimeout(() => setMessage(null), 3000);
+
+      // Refresh foods after deletion
+      fetchFoods();
+    } catch (error) {
+      console.error('Delete food error:', error);
+      setMessage({ text: 'Failed to delete food. Please try again.', type: 'error' });
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
   return (
     <div className="food-item">
       {isEditing ? (
         <>
-          <input 
-            type="text" 
-            value={foodName} 
-            onChange={(e) => setFoodName(e.target.value)} 
+          <input
+            type="text"
+            value={foodName}
+            onChange={(e) => setFoodName(e.target.value)}
           />
-          <input 
-            type="number" 
-            value={foodPrice} 
-            onChange={(e) => setFoodPrice(e.target.value)} 
+          <input
+            type="number"
+            value={foodPrice}
+            onChange={(e) => setFoodPrice(e.target.value)}
           />
           <button className="edit-button" onClick={handleEditFood}>Save</button>
           <button className="edit-button" onClick={() => setIsEditing(false)}>Cancel</button>
@@ -191,7 +239,10 @@ const FoodItem = ({ category, food, handleAddToOrder, role, isLoggedIn, setMessa
           <span className="food-price">${food.foodPrice.toFixed(2)}</span>
           {isLoggedIn && (
             role === 'ADMIN' ? (
-              <button className="edit-button" onClick={() => setIsEditing(true)}>Edit</button>
+              <>
+                <button className="edit-button" onClick={() => setIsEditing(true)}>Edit</button>
+                <button className="edit-button delete-button" onClick={handleDelete}>Delete</button>
+              </>
             ) : (
               <button className="add-button" onClick={() => handleAddToOrder(category.categoryId, food.foodId)}>Add</button>
             )
@@ -201,6 +252,7 @@ const FoodItem = ({ category, food, handleAddToOrder, role, isLoggedIn, setMessa
     </div>
   );
 };
+
 
 const MessageBar = ({ message }) => {
   const messageStyle = {
