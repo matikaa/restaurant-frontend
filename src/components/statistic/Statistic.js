@@ -8,15 +8,24 @@ const StatisticPage = () => {
   const [error, setError] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [timeFrame, setTimeFrame] = useState('month') // Default time frame
   const { role, token } = useContext(UserContext);
 
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/orders', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const orderDate = {
+          orderDate: timeFrame,
+        };
+
+        const response = await axios.post(
+          'http://localhost:8080/orders',
+          orderDate,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
         setStatistics(response.data);
+        console.log(response.data);
       } catch (error) {
         setError('Failed to fetch statistics. Please try again.');
       }
@@ -25,7 +34,7 @@ const StatisticPage = () => {
     if (role === 'ADMIN') {
       fetchStatistics();
     }
-  }, [role, token]);
+  }, [role, token, timeFrame]); // Include timeFrame in dependencies to fetch new data on time frame change
 
   if (role !== 'ADMIN') {
     return <p>You do not have permission to view this page.</p>;
@@ -82,6 +91,14 @@ const StatisticPage = () => {
           <button onClick={() => setSortOrder('asc')}>Ascending</button>
           <button onClick={() => setSortOrder('desc')}>Descending</button>
         </div>
+      </div>
+      <div className="sort-container">
+        <label htmlFor="timeFrame">Select Time Period:</label>
+        <select id="timeFrame" value={timeFrame} onChange={(e) => setTimeFrame(e.target.value)}>
+          <option value="month">Month</option>
+          <option value="half_year">Half Year</option>
+          <option value="year">Year</option>
+        </select>
       </div>
       <p>Total Value of Orders: ${statistics.value.toFixed(2)}</p>
       {Object.entries(groupedByCategory).map(([categoryName, categoryData]) => (
