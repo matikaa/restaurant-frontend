@@ -29,9 +29,9 @@ const Navigation = () => {
       
       {isLoggedIn ? (
         <>
-          <Link to="/cart" className="nav-link">Cart</Link>
-          <Link to="/orders" className="nav-link">Orders</Link>
-          <Link to="/balance" className="nav-link">Balance</Link>
+          {role === 'USER' && <Link to="/cart" className="nav-link">Cart</Link>}
+          {role === 'USER' && <Link to="/orders" className="nav-link">Orders</Link>}
+          {role === 'USER' && <Link to="/balance" className="nav-link">Balance</Link>}
           {role === 'ADMIN' && <Link to="/statistics" className="nav-link">Statistics</Link>}
           {role === 'ADMIN' && <Link to="/management" className="nav-link">Management</Link>}
           {role === 'ADMIN' && <Link to="/users" className="nav-link">Users</Link>}
