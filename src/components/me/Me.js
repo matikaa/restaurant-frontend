@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
-import './Me.css'; // Import stylów CSS
+import './Me.css';
 import { useNavigate } from 'react-router-dom';
 
 const Me = () => {

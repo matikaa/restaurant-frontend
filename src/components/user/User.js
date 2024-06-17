@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
-import './User.css'; // Import stylów CSS
+import './User.css';
 
 const User = () => {
   const { userId, token } = useContext(UserContext);
@@ -19,7 +19,7 @@ const User = () => {
           throw new Error('Invalid response from server');
         }
 
-        setUsers(response.data.userResponses); // Assumed the response structure matches UserListResponse
+        setUsers(response.data.userResponses);
         setError('');
       } catch (error) {
         setError('Failed to fetch users. Please try again.');
@@ -27,7 +27,7 @@ const User = () => {
     };
 
     fetchUsers();
-  }, [token]); // Include token in the dependency array to re-fetch users when token changes
+  }, [token]);
 
   const handleDeleteUser = async (userId) => {
     try {
@@ -36,7 +36,7 @@ const User = () => {
         null,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      // Remove the deleted user from the local state
+      
       setUsers(users.filter(user => user.userId !== userId));
     } catch (error) {
       setError('Failed to delete user. Please try again.');
@@ -62,7 +62,7 @@ const User = () => {
             <th>Phone Number</th>
             <th>Money</th>
             <th>Loyalty Card</th>
-            <th>Action</th> {/* Add a column for actions */}
+            <th>Action</th> {}
           </tr>
         </thead>
         <tbody>

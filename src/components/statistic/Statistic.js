@@ -8,7 +8,7 @@ const StatisticPage = () => {
   const [error, setError] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [timeFrame, setTimeFrame] = useState('month') // Default time frame
+  const [timeFrame, setTimeFrame] = useState('month')
   const { role, token } = useContext(UserContext);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const StatisticPage = () => {
     if (role === 'ADMIN') {
       fetchStatistics();
     }
-  }, [role, token, timeFrame]); // Include timeFrame in dependencies to fetch new data on time frame change
+  }, [role, token, timeFrame]);
 
   if (role !== 'ADMIN') {
     return <p>You do not have permission to view this page.</p>;

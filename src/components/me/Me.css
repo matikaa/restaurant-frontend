@@ -5,7 +5,7 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
-  position: relative; /* Dodajemy relatywną pozycję, aby móc umieścić powiadomienia absolutnie */
+  position: relative;
 }
 
 .user-details {
@@ -40,14 +40,14 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #007bff; /* Kolor tła przycisku */
-  color: white; /* Kolor tekstu */
+  background-color: #007bff;
+  color: white;
   font-size: 16px;
   transition: background-color 0.3s ease;
 }
 
 .actions button:hover {
-  background-color: #0056b3; /* Kolor tła przycisku po najechaniu */
+  background-color: #0056b3;
 }
 
 .form-group {

@@ -13,7 +13,6 @@ const fetchCategories = async (token, setCategories, setCategoryPositionId) => {
     if (Array.isArray(response.data.categoryResponses)) {
       setCategories(response.data.categoryResponses);
 
-      // Set categoryPositionId based on the maximum positionId from categories
       const maxCategoryPositionId = Math.max(...response.data.categoryResponses.map(category => category.positionId), 0);
       setCategoryPositionId(maxCategoryPositionId + 1);
     } else {
@@ -70,7 +69,6 @@ const Management = () => {
       setTimeout(() => setMessage(null), 3000);
       setCategoryName('');
 
-      // Fetch updated categories
       fetchCategories(token, setCategories, setCategoryPositionId);
 
     } catch (error) {
@@ -98,7 +96,6 @@ const Management = () => {
       setFoodPrice('');
       setFoodPositionId('');
 
-      // Refresh food positionId for the selected category
       fetchFoodForCategory(selectedCategoryId, token, setFoodPositionId);
 
     } catch (error) {
